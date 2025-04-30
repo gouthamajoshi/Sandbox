@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Team Line Graph Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: auto; }
+    canvas { max-width: 100%; }
+    select, button { padding: 8px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>iC7 Automation Self Review</h1>
+
+  <label for="memberSelect">Select Team Member:</label>
+  <select id="memberSelect" onchange="updateChart()"></select>
+
+  <canvas id="lineGraph" width="500" height="400"></canvas>
+  <br>
+  <button onclick="downloadChart()">Download PNG</button>
+
+  <script>
+    const sprintLabels = ['Sprint 64B', 'Sprint 65A', 'Sprint 66A', 'Sprint 67A', 'Sprint 67B', 'Sprint 68B'];
+
+    const teamData = [
+      { name: 'Dominic', readings: [[8, 1, 9, 9], [7, 7, 7, 8], [8, 9, 5, 10], [], [], []] },
+      { name: 'Logee', readings: [[4, 8, 8, 6], [5, 8, 9, 9], [], [], [], [6, 9, 9, 9]] },
+      { name: 'Mohamed', readings: [[], [], [6, 5, 6, 7], [5, 5, 6, 6], [5, 5, 6, 6], [9, 10, 8, 9]] },
+      { name: 'Ans', readings: [[6, 6, 6, 8], [], [7, 7, 7, 7], [8, 6, 6, 7], [8, 6, 6, 7], [8, 7, 7, 8]] },
+      { name: 'Leonardo', readings: [[7, 8, 7, 6], [8, 8, 5, 7], [8, 8, 7, 6], [6, 7, 7, 7], [6, 7, 7, 7], [7, 8, 8, 9]] },
+      { name: 'Gennadii', readings: [[4, 3, 8, 7], [6, 6, 7, 8], [9, 8, 7, 8], [5, 5, 5, 7], [5, 5, 5, 7], [5, 5, 7, 6]] },
+      { name: 'Riddhi', readings: [[6, 8, 7, 6], [7, 6, 7, 8], [], [6, 6, 7, 6], [6, 6, 7, 6], [3, 4, 4, 4]] }
+    ];
+
+    const colors = [
+      'rgba(255,99,132,0.6)', 'rgba(54,162,235,0.6)', 'rgba(255,206,86,0.6)',
+      'rgba(75,192,192,0.6)', 'rgba(153,102,255,0.6)', 'rgba(255,159,64,0.6)'
+    ];
+
+    const borderColors = [
+      'rgba(255,99,132,1)', 'rgba(54,162,235,1)', 'rgba(255,206,86,1)',
+      'rgba(75,192,192,1)', 'rgba(153,102,255,1)', 'rgba(255,159,64,1)'
+    ];
+
+    const labels = ['Fun', 'Teamwork', 'Value to Team', 'Value to Product'];  // Line categories
+    const memberSelect = document.getElementById('memberSelect');
+    const ctx = document.getElementById('lineGraph').getContext('2d');
+    let lineGraph = null;
+
+    // Populate dropdown
+    teamData.forEach((member, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = member.name;
+      memberSelect.appendChild(option);
+    });
+
+    function updateChart() {
+      const selectedIndex = parseInt(memberSelect.value);
+      const member = teamData[selectedIndex];
+
+      const datasets = [];
+      
+      // Each line category (Fun, Teamwork, etc.) will have its own dataset
+      for (let i = 0; i < member.readings[0].length; i++) {
+        const categoryData = [];
+        for (let j = 0; j < member.readings.length; j++) {
+          if (member.readings[j].length > 0) {
+            categoryData.push(member.readings[j][i]);  // Push the i-th category's value for each sprint
+          } else {
+            categoryData.push(null);  // Handle missing data
+          }
+        }
+
+        datasets.push({
+          label: labels[i],
+          data: categoryData,
+          borderColor: colors[i % colors.length],
+          backgroundColor: 'transparent',
+          fill: false,
+          borderWidth: 2
+        });
+      }
+
+      if (lineGraph) lineGraph.destroy();
+
+      lineGraph = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: sprintLabels,  // Sprints are on the x-axis
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              min: 0,
+              max: 10
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: member.name
+            }
+          }
+        }
+      });
+    }
+
+    function downloadChart() {
+      const memberName = teamData[parseInt(memberSelect.value)].name;
+      const link = document.createElement('a');
+      link.download = `${memberName}-line-graph.png`;
+      link.href = document.getElementById('lineGraph').toDataURL('image/png');
+      link.click();
+    }
+
+    // Initialize chart
+    updateChart();
+  </script>
+</body>
+</html>

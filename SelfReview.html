@@ -29,7 +29,7 @@
       { name: 'Mohamed', readings: [ [null,null,null,null], [null,null,null,null], [6, 5, 6, 7], [5, 5, 6, 6], [5, 5, 6, 6], [9, 10, 8, 9], [7,9,7,6],[8,7,7,8],[null,null,null,null]] },
       { name: 'Ans', readings: [[6, 6, 6, 8], [null,null,null,null], [7, 7, 7, 7], [8, 6, 6, 7], [8, 6, 6, 7], [8, 7, 7, 8],[7,8,8,6],[7,7,7,8],[null,null,null,null] ] },
       { name: 'Leonardo', readings: [[7, 8, 7, 6], [8, 8, 5, 7], [8, 8, 7, 6], [6, 7, 7, 7], [6, 7, 7, 7], [7, 8, 8, 9], [7,7,7,7], [7,8,8,8],[7,8,8,7]] },
-      { name: 'Gennadii', readings: [[4, 3, 8, 7], [6, 6, 7, 8], [9, 8, 7, 8], [5, 5, 5, 7], [5, 5, 5, 7], [5, 5, 7, 6], [5, 5, 8, 6], [6,5,6,6], [3,5,6,2] },
+      { name: 'Gennadii', readings: [[4, 3, 8, 7], [6, 6, 7, 8], [9, 8, 7, 8], [5, 5, 5, 7], [5, 5, 5, 7], [5, 5, 7, 6], [5, 5, 8, 6], [6,5,6,6], [3,5,6,2]] },
       { name: 'Riddhi', readings: [[6, 8, 7, 6], [7, 6, 7, 8], [null,null,null,null], [6, 6, 7, 6], [6, 6, 7, 6], [3, 4, 4, 4], [5,6,6,6], [7,8,8,8],[7,8,7,7]] }
     ];
 
@@ -43,7 +43,7 @@
       'rgba(75,192,192,1)', 'rgba(153,102,255,1)', 'rgba(255,159,64,1)'
     ];
 
-    const labels = ['Fun', 'Teamwork', 'Value to Team', 'Value to Product'];  // Line categories
+    const labels = ['Fun', 'Teamwork', 'Value to Team', 'Value to Product'];
     const memberSelect = document.getElementById('memberSelect');
     const ctx = document.getElementById('lineGraph').getContext('2d');
     let lineGraph = null;
@@ -61,15 +61,22 @@
       const member = teamData[selectedIndex];
 
       const datasets = [];
-      
-      // Each line category (Fun, Teamwork, etc.) will have its own dataset
-      for (let i = 0; i < member.readings[0].length; i++) {
+
+      // Find the first non-empty reading
+      const firstValidReading = member.readings.find(r => r && r.length > 0 && r.some(v => v !== null));
+      if (!firstValidReading) {
+        alert("No valid data available for this member.");
+        return;
+      }
+
+      for (let i = 0; i < firstValidReading.length; i++) {
         const categoryData = [];
-        for (let j = 0; j < member.readings.length; j++) {
-          if (member.readings[j].length > 0) {
-            categoryData.push(member.readings[j][i]);  // Push the i-th category's value for each sprint
+        for (let j = 0; j < sprintLabels.length; j++) {
+          const reading = member.readings[j];
+          if (reading && reading.length > 0) {
+            categoryData.push(reading[i]);
           } else {
-            categoryData.push(null);  // Handle missing data
+            categoryData.push(null);
           }
         }
 
@@ -79,7 +86,8 @@
           borderColor: colors[i % colors.length],
           backgroundColor: 'transparent',
           fill: false,
-          borderWidth: 2
+          borderWidth: 2,
+          spanGaps: true
         });
       }
 
@@ -88,7 +96,7 @@
       lineGraph = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: sprintLabels,  // Sprints are on the x-axis
+          labels: sprintLabels,
           datasets: datasets
         },
         options: {
@@ -118,7 +126,7 @@
       link.click();
     }
 
-    // Initialize chart
+    // Initialize chart on first load
     updateChart();
   </script>
 </body>

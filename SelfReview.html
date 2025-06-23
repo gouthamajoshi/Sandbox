@@ -21,16 +21,16 @@
   <button onclick="downloadChart()">Download PNG</button>
 
   <script>
-    const sprintLabels = ['Sprint 64B', 'Sprint 65A', 'Sprint 66A', 'Sprint 67A', 'Sprint 67B', 'Sprint 68A', 'Sprint 68B'];
+    const sprintLabels = ['Sprint 64B', 'Sprint 65A', 'Sprint 66A', 'Sprint 67A', 'Sprint 67B', 'Sprint 68A', 'Sprint 68B', 'Sprint 69A', 'Sprint 69B'];
 
     const teamData = [
-      { name: 'Dominic', readings: [[8, 1, 9, 9], [7, 7, 7, 8], [8, 9, 5, 10], [null,null,null,null], [null,null,null,null], [null,null,null,null], [6,5,7,7]] },
-      { name: 'Logee', readings: [[4, 8, 8, 6], [5, 8, 9, 9], [], [], [], [6, 9, 9, 9], [6,8,8,7], [6,8,10,8]] },
-      { name: 'Mohamed', readings: [ [null,null,null,null], [null,null,null,null], [6, 5, 6, 7], [5, 5, 6, 6], [5, 5, 6, 6], [9, 10, 8, 9], [7,9,7,6],[8,7,7,8]] },
-      { name: 'Ans', readings: [[6, 6, 6, 8], [null,null,null,null], [7, 7, 7, 7], [8, 6, 6, 7], [8, 6, 6, 7], [8, 7, 7, 8],[7,8,8,6],[7,7,7,8] ] },
-      { name: 'Leonardo', readings: [[7, 8, 7, 6], [8, 8, 5, 7], [8, 8, 7, 6], [6, 7, 7, 7], [6, 7, 7, 7], [7, 8, 8, 9], [7,7,7,7], [7,8,8,8]] },
-      { name: 'Gennadii', readings: [[4, 3, 8, 7], [6, 6, 7, 8], [9, 8, 7, 8], [5, 5, 5, 7], [5, 5, 5, 7], [5, 5, 7, 6], [5, 5, 8, 6], [6,5,6,6]] },
-      { name: 'Riddhi', readings: [[6, 8, 7, 6], [7, 6, 7, 8], [null,null,null,null], [6, 6, 7, 6], [6, 6, 7, 6], [3, 4, 4, 4], [5,6,6,6], [7,8,8,8]] }
+      { name: 'Dominic', readings: [[8, 1, 9, 9], [7, 7, 7, 8], [8, 9, 5, 10], [null,null,null,null], [null,null,null,null], [null,null,null,null], [6,5,7,7], [7,8,7,7]] },
+      { name: 'Logee', readings: [[4, 8, 8, 6], [5, 8, 9, 9], [], [], [], [6, 9, 9, 9], [6,8,8,7], [6,8,10,8],[7,7,9,10]] },
+      { name: 'Mohamed', readings: [ [null,null,null,null], [null,null,null,null], [6, 5, 6, 7], [5, 5, 6, 6], [5, 5, 6, 6], [9, 10, 8, 9], [7,9,7,6],[8,7,7,8],[null,null,null,null]] },
+      { name: 'Ans', readings: [[6, 6, 6, 8], [null,null,null,null], [7, 7, 7, 7], [8, 6, 6, 7], [8, 6, 6, 7], [8, 7, 7, 8],[7,8,8,6],[7,7,7,8],[null,null,null,null] ] },
+      { name: 'Leonardo', readings: [[7, 8, 7, 6], [8, 8, 5, 7], [8, 8, 7, 6], [6, 7, 7, 7], [6, 7, 7, 7], [7, 8, 8, 9], [7,7,7,7], [7,8,8,8],[7,8,8,7]] },
+      { name: 'Gennadii', readings: [[4, 3, 8, 7], [6, 6, 7, 8], [9, 8, 7, 8], [5, 5, 5, 7], [5, 5, 5, 7], [5, 5, 7, 6], [5, 5, 8, 6], [6,5,6,6], [3,5,6,2] },
+      { name: 'Riddhi', readings: [[6, 8, 7, 6], [7, 6, 7, 8], [null,null,null,null], [6, 6, 7, 6], [6, 6, 7, 6], [3, 4, 4, 4], [5,6,6,6], [7,8,8,8],[7,8,7,7]] }
     ];
 
     const colors = [
